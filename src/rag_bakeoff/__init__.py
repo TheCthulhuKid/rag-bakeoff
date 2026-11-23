@@ -1,2 +1,1 @@
-def main() -> None:
-    print("Hello from rag-bakeoff!")
+"""Runs RAG strategies against one corpus and question set and reports comparable numbers."""

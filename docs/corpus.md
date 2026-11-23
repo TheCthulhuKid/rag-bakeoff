@@ -53,8 +53,19 @@ document count will be lower than 747. It must stay within 200–1,000.
 
 ## Snapshot
 
+Fetch the pages once, from the repo root:
+
+```sh
+.venv/bin/rag-bakeoff fetch
+```
+
+It reads the sitemap, downloads every selected page that is not stored yet (one request per second) and
+writes to `data/raw/`: the pages as `pages/<hash of the URL>.html.gz`, and `manifest.jsonl` with one line
+per page (URL, file, fetch time, SHA-256 of the page). If it stops on an error, run it again; it continues
+where it stopped.
+
 Filled in when the corpus is fetched and loaded (plan steps 1.3 and 1.4).
 
-- **Snapshot date:** not fetched yet
-- **Raw pages fetched:** not fetched yet
+- **Snapshot date:** 2026-11-23 (fetched 13:37–13:52 UTC)
+- **Raw pages fetched:** 747, 32 MB gzipped in `data/raw/`
 - **Documents after loading:** not loaded yet
