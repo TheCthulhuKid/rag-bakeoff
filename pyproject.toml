@@ -7,7 +7,9 @@ authors = [
     { name = "Marc", email = "gileadslostson@gmail.com" }
 ]
 requires-python = ">=3.14"
-dependencies = []
+dependencies = [
+    "pydantic>=2.14.4",
+]
 
 [project.scripts]
 rag-bakeoff = "rag_bakeoff:main"
