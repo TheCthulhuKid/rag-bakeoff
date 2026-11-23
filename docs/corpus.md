@@ -64,8 +64,33 @@ writes to `data/raw/`: the pages as `pages/<hash of the URL>.html.gz`, and `mani
 per page (URL, file, fetch time, SHA-256 of the page). If it stops on an error, run it again; it continues
 where it stopped.
 
-Filled in when the corpus is fetched and loaded (plan steps 1.3 and 1.4).
+Then turn the raw pages into documents:
+
+```sh
+.venv/bin/rag-bakeoff load
+```
+
+It checks every stored page against the manifest, then writes `data/corpus/documents.jsonl`, sorted by ID.
+The same raw files always give the same file.
+
+- **ID:** the page's path below `/de/themen/`, for example
+  `persoenliche_dokumente_und_bestaetigungen/reisepass/Seite.020100`.
+- **Text:** the page body with one line per paragraph, heading (`## `, `### `), list item (`- `) or table
+  row (cells joined with ` | `). Navigation, the title block and the footer are not part of it.
+- **Metadata:** `topic`, `last_updated`, `owner` and `fetched_at`.
+- **Left out, link lists:** pages where bare links outnumber all other blocks and the remaining text is
+  under 400 characters, which is about the length of a teaser.
+- **Left out, English:** the 8 pages below `menschen_aus_anderen_staaten/Information-in-English`.
+
+Known oddities in this snapshot:
+
+- Four documents have the same text as another one, because the site publishes the same page under two
+  paths (for example a name-change notice under both marriage and divorce). A question answered by such a
+  page must list both IDs.
+- Two pages were served with English headings and labels around their German text
+  (`persoenliche_dokumente_und_bestaetigungen/reisepass/Seite.020100` is one of them).
 
 - **Snapshot date:** 2026-11-23 (fetched 13:37–13:52 UTC)
 - **Raw pages fetched:** 747, 32 MB gzipped in `data/raw/`
-- **Documents after loading:** not loaded yet
+- **Documents after loading:** 587 in `data/corpus/documents.jsonl` (2 MB); 152 link lists and 8 English
+  pages left out
