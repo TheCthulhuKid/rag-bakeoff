@@ -51,6 +51,28 @@ document count will be lower than 747. It must stay within 200–1,000.
   Claude writes the German version, and Marc reviews it.
 - Both versions are stored. The English originals allow a later cross-language run against the same corpus.
 
+The questions live in `questions/golden-v1.jsonl`, one JSON object per line (blank lines are allowed):
+
+```json
+{"id": "q001", "text": "<German question>", "text_en": "<English original>", "expected_answer": "<answer>", "expected_document_ids": ["<document ID>"], "tags": ["distractor"]}
+{"id": "q002", "text": "<German question>", "text_en": "<English original>", "answerable": false}
+```
+
+- `expected_document_ids` lists every document that contains the answer. Optional `expected_passages`
+  (`{"document_id": ..., "text": ...}`) quote the exact sentences.
+- A question with `"answerable": false` has no answer in the corpus and lists no answer or documents.
+- `tags` are free labels for slicing the report later.
+
+Check the file at any time while writing:
+
+```sh
+.venv/bin/rag-bakeoff check-questions
+```
+
+It lists every problem with its line or question ID: misspelt or missing fields, a question ID used twice,
+a document ID that is not in the corpus, and a question that expects only one of several documents with
+identical text.
+
 ## Snapshot
 
 Fetch the pages once, from the repo root:

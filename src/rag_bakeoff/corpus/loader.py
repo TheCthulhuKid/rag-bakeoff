@@ -63,6 +63,11 @@ def write_documents(documents: list[Document], path: Path) -> None:
     path.write_text("".join(document.model_dump_json() + "\n" for document in documents))
 
 
+def read_documents(path: Path) -> list[Document]:
+    """Read a documents file written by `write_documents`."""
+    return [Document.model_validate_json(line) for line in path.read_text().splitlines()]
+
+
 def parse_page(html: bytes, page: RawPage) -> Document | None:
     """Extract the document from one page, or None if the page only lists links."""
     sections = BeautifulSoup(html, "html.parser").select("#content > .content-page > div")
